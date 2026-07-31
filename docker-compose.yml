@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ferrum
+      POSTGRES_PASSWORD: ferrum
+      POSTGRES_DB: ferrum
+    ports:
+      - "5432:5432"
+    volumes:
+      - ferrum_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ferrum -d ferrum"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://ferrum:ferrum@db:5432/ferrum?schema=public"
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-dev-only-secret-change-me}
+      NEXTAUTH_URL: "http://localhost:3000"
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+  # Разовая загрузка тестовых данных: docker compose --profile tools run --rm seed
+  # Не запускается сам по себе при `docker compose up` — только по явной команде.
+  seed:
+    build: .
+    profiles: ["tools"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://ferrum:ferrum@db:5432/ferrum?schema=public"
+    entrypoint: []
+    command: ["npx", "tsx", "prisma/seed.ts"]
+
+volumes:
+  ferrum_db_data:

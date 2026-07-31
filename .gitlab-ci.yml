@@ -1,0 +1,75 @@
+stages:
+  - install
+  - check
+  - build
+  - docker
+
+variables:
+  # значения-заглушки для build-этапа: env.ts требует их наличия при импорте,
+  # реальные секреты для сборки не нужны
+  DATABASE_URL: "postgresql://ferrum:ferrum@localhost:5432/ferrum?schema=public"
+  NEXTAUTH_SECRET: "ci-build-placeholder-secret"
+
+default:
+  image: node:20-alpine
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+
+install:
+  stage: install
+  script:
+    # npm ci уважает allowScripts из package.json — approve-scripts руками
+    # прогонять не нужно, всё уже разрешено в репозитории.
+    - npm ci --cache .npm --prefer-offline
+    - npx prisma generate
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+lint:
+  stage: check
+  needs: ["install"]
+  script:
+    - npm run lint
+
+test:
+  stage: check
+  needs: ["install"]
+  script:
+    - npm test
+
+prisma-validate:
+  stage: check
+  needs: ["install"]
+  script:
+    - npx prisma validate
+
+build:
+  stage: build
+  needs: ["install"]
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - .next/
+    expire_in: 1 hour
+
+docker-build:
+  stage: docker
+  needs: ["build"]
+  image: docker:24
+  services:
+    - docker:24-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker build -t ferrum:$CI_COMMIT_SHORT_SHA .
+  rules:
+    # собираем образ только в main и в MR — не тратим CI-минуты на каждый черновой пуш в фиче-ветке
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
