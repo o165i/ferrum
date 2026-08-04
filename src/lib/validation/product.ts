@@ -25,6 +25,7 @@ export const createProductSchema = z.object({
   sizes: z.array(z.string().trim().min(1).max(10)).default([]),
   images: z.array(z.string().url()).default([]),
   stock: z.number().int().min(0).default(0),
+  popularityScore: z.number().int().min(0).default(0),
   isActive: z.boolean().default(true),
 });
 
@@ -34,7 +35,7 @@ export const listProductsQuerySchema = z.object({
   category: productCategoryEnum.optional(),
   color: z.string().trim().optional(),
   search: z.string().trim().max(100).optional(),
-  sort: z.enum(["price_asc", "price_desc", "newest"]).default("newest"),
+  sort: z.enum(["price_asc", "price_desc", "newest", "popular"]).default("newest"),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(50).default(20),
 });

@@ -48,4 +48,9 @@ describe("listProductsQuerySchema", () => {
     const result = listProductsQuerySchema.safeParse({ pageSize: "500" });
     expect(result.success).toBe(false);
   });
+
+  it("accepts popular sorting", () => {
+    const result = listProductsQuerySchema.parse({ sort: "popular" });
+    expect(result.sort).toBe("popular");
+  });
 });

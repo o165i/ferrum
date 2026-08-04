@@ -41,6 +41,28 @@
   gap: 48px 24px;
 }
 
+.count {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .13em;
+}
+
+.status {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.status button { border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--fg); cursor: pointer; }
+
 @media (max-width: 900px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

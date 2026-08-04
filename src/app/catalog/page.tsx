@@ -1,27 +1,15 @@
 import type { Metadata } from "next";
-import { ProductCard } from "@/components/product/ProductCard";
-import { PRODUCTS } from "@/constants/mockData";
+import { CatalogProducts } from "@/components/product/CatalogProducts";
 import styles from "./page.module.css";
 
-export const metadata: Metadata = {
-  title: "Catalog — FERRUM",
-  description: "The complete FERRUM product archive.",
-};
+export const metadata: Metadata = { title: "Catalog — FERRUM", description: "The complete product catalog loaded from the commerce API." };
 
 export default function CatalogPage() {
   return (
     <section className={styles.catalog} aria-labelledby="catalog-title">
-      <header className={styles.header}>
-        <div>
-          <p>DROP 004 / FULL ARCHIVE</p>
-          <h1 id="catalog-title">Catalog</h1>
-        </div>
-        <span>{PRODUCTS.length} ITEMS</span>
-      </header>
+      <header className={styles.header}><div><p>LIVE /API/PRODUCTS</p><h1 id="catalog-title">Catalog</h1></div></header>
       <div className={styles.divider} />
-      <div className={styles.grid}>
-        {PRODUCTS.map((product) => <ProductCard key={product.id} product={product} />)}
-      </div>
+      <CatalogProducts />
     </section>
   );
 }

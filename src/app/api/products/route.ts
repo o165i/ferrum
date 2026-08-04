@@ -33,6 +33,8 @@ export async function GET(req: Request) {
         ? { priceCents: "asc" }
         : query.sort === "price_desc"
           ? { priceCents: "desc" }
+          : query.sort === "popular"
+            ? { popularityScore: "desc" }
           : { createdAt: "desc" };
 
     const [items, total] = await Promise.all([
