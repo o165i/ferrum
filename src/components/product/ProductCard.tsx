@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Product } from "@/types/product";
+import { AddToBag } from "@/components/cart/AddToBag";
 import styles from "./ProductCard.module.css";
 
 const FALLBACK_IMAGE = "https://picsum.photos/seed/ferrum-placeholder/900/1150";
@@ -22,6 +23,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div><h3>{product.name}</h3><p>{product.category}</p></div>
         <div className={styles.prices}>{product.saleCents !== null ? <><del>{formatPrice(product.priceCents)}</del><strong>{formatPrice(product.saleCents)}</strong></> : <span>{formatPrice(product.priceCents)}</span>}</div>
       </div>
+      <AddToBag product={product} />
     </article>
   );
 }

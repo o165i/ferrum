@@ -49,6 +49,47 @@
   overflow-wrap: anywhere;
 }
 
+.orders {
+  margin: 46px 0 34px;
+}
+
+.orders h2 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.orders ul {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.orders li {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+}
+
+.orders li > div {
+  display: grid;
+  gap: 6px;
+}
+
+.orders li > div:last-child {
+  text-align: right;
+}
+
+.orders span,
+.emptyOrders {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
 @media (max-width: 680px) {
   .account {
     width: min(100% - 28px, 760px);

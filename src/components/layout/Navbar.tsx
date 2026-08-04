@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useCart } from "@/components/cart/CartProvider";
 import styles from "./Navbar.module.css";
 
 const NAV_ITEMS = [
@@ -11,6 +12,7 @@ const NAV_ITEMS = [
 
 export function Navbar() {
   const { data: session, status } = useSession();
+  const { itemCount, hydrated } = useCart();
   const accountLabel = session?.user.name || session?.user.email || "Account";
 
   return (
@@ -37,10 +39,10 @@ export function Navbar() {
           ) : (
             <span className={styles.sessionPlaceholder} aria-hidden="true" />
           )}
-          <button className={styles.bag} type="button" aria-label="Shopping bag, 0 items">
+          <Link className={styles.bag} href="/cart" aria-label={`Shopping bag, ${hydrated ? itemCount : 0} items`}>
             <span className={styles.bagIcon} aria-hidden="true" />
-            <span>0</span>
-          </button>
+            <span>{hydrated ? itemCount : 0}</span>
+          </Link>
         </div>
       </div>
     </header>

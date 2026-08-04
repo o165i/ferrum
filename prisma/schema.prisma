@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -21,6 +21,17 @@ enum ProductCategory {
   ACCESSORIES
 }
 
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  BANK_TRANSFER
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -29,31 +40,77 @@ model User {
   role         Role     @default(USER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  orders       Order[]
 
   @@map("users")
 }
 
 model Product {
-  id          String          @id @default(cuid())
-  ref         String          @unique
-  name        String
-  slug        String          @unique
-  category    ProductCategory
-  color       String
+  id              String          @id @default(cuid())
+  ref             String          @unique
+  name            String
+  slug            String          @unique
+  category        ProductCategory
+  color           String
   // prices stored in minor units (cents) to avoid float rounding issues
-  priceCents  Int
-  saleCents   Int?
-  description String          @default("")
-  sizes       String[]        @default([])
-  images      String[]        @default([])
-  stock       Int             @default(0)
-  popularityScore Int         @default(0)
-  isActive    Boolean         @default(true)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  priceCents      Int
+  saleCents       Int?
+  description     String          @default("")
+  sizes           String[]        @default([])
+  images          String[]        @default([])
+  stock           Int             @default(0)
+  popularityScore Int             @default(0)
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  orderItems      OrderItem[]
 
   @@index([category])
   @@index([isActive])
   @@index([popularityScore])
   @@map("products")
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  orderNumber   String        @unique
+  userId        String
+  status        OrderStatus   @default(PENDING)
+  paymentMethod PaymentMethod
+  contactName   String
+  contactEmail  String
+  phone         String
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  postalCode    String
+  country       String
+  subtotalCents Int
+  totalCents    Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  user          User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items         OrderItem[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id             String   @id @default(cuid())
+  orderId        String
+  productId      String?
+  productRef     String
+  productName    String
+  size           String
+  quantity       Int
+  unitPriceCents Int
+  lineTotalCents Int
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product        Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
 }
