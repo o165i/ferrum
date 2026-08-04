@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "FERRUM",
-  description: "FERRUM — independent hard-goods label",
+  title: "FERRUM — Drop 004",
+  description: "FERRUM is an independent hard-goods label focused on material, small runs and repairable construction.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

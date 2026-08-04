@@ -1,0 +1,95 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--line);
+  background: rgba(11, 11, 10, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.inner {
+  width: min(100% - 40px, 1280px);
+  min-height: 66px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.logo {
+  justify-self: start;
+  font-family: var(--display);
+  font-size: 24px;
+  letter-spacing: 0.08em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navLink,
+.bag {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.navLink {
+  padding: 6px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
+.bag {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bagIcon {
+  position: relative;
+  width: 15px;
+  height: 16px;
+  border: 1px solid currentColor;
+}
+
+.bagIcon::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+@media (max-width: 680px) {
+  .inner {
+    width: min(100% - 28px, 1280px);
+    grid-template-columns: 1fr auto;
+    min-height: 58px;
+  }
+
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 22px;
+    padding: 0 0 11px;
+  }
+}

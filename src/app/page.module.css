@@ -1,0 +1,145 @@
+.hero {
+  position: relative;
+  min-height: min(78vh, 860px);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.heroImage {
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.12) brightness(0.68);
+}
+
+.heroShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 11, 10, 0.04) 34%, rgba(11, 11, 10, 0.88) 100%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 40px, 1280px);
+  min-height: min(78vh, 860px);
+  margin: 0 auto;
+  padding-bottom: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.eyebrow,
+.sectionKicker,
+.runNote,
+.viewAll {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.eyebrow,
+.sectionKicker,
+.runNote {
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+}
+
+.heroTitle,
+.sectionTitle {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-size: clamp(76px, 14.5vw, 210px);
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.featured {
+  width: min(100% - 40px, 1280px);
+  margin: 0 auto;
+  padding: 78px 0 88px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 31px;
+}
+
+.sectionKicker {
+  margin: 0 0 10px;
+}
+
+.sectionTitle {
+  font-size: clamp(34px, 4vw, 56px);
+}
+
+.viewAll {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--muted);
+  color: var(--muted);
+}
+
+.viewAll:hover {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 40px;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero,
+  .heroContent {
+    min-height: 69vh;
+  }
+
+  .heroContent,
+  .featured {
+    width: min(100% - 28px, 1280px);
+  }
+
+  .heroContent {
+    padding-bottom: 38px;
+  }
+
+  .heroActions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .featured {
+    padding: 56px 0 64px;
+  }
+
+  .productGrid {
+    gap: 34px 12px;
+  }
+}
