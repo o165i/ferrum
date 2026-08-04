@@ -27,6 +27,7 @@ export function Navbar() {
         <div className={styles.actions}>
           {status === "authenticated" ? (
             <>
+              {session.user.role === "ADMIN" ? <Link href="/admin" className={styles.textButton}>Admin</Link> : null}
               <Link href="/account" className={styles.accountLink} title={accountLabel}>
                 {accountLabel}
               </Link>

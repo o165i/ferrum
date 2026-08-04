@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createOrderSchema } from "@/lib/validation/order";
+import { createOrderSchema, updateOrderStatusSchema } from "@/lib/validation/order";
 
 const validOrder = {
   contactName: "Alex Example",
@@ -34,5 +34,16 @@ describe("createOrderSchema", () => {
 
   it("rejects unsupported payment methods", () => {
     expect(() => createOrderSchema.parse({ ...validOrder, paymentMethod: "CARD" })).toThrow();
+  });
+});
+
+describe("updateOrderStatusSchema", () => {
+  it("accepts admin-managed order states", () => {
+    expect(updateOrderStatusSchema.parse({ status: "CONFIRMED" }).status).toBe("CONFIRMED");
+    expect(updateOrderStatusSchema.parse({ status: "CANCELLED" }).status).toBe("CANCELLED");
+  });
+
+  it("does not allow moving an order back to pending", () => {
+    expect(() => updateOrderStatusSchema.parse({ status: "PENDING" })).toThrow();
   });
 });

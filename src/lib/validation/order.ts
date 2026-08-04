@@ -35,3 +35,7 @@ export const createOrderSchema = z
   });
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
+
+export const updateOrderStatusSchema = z.object({
+  status: z.enum(["CONFIRMED", "CANCELLED"]),
+});
