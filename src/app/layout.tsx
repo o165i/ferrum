@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
-import { QueryProvider } from "@/components/providers/QueryProvider";
+import { AppProviders } from "@/components/providers/AppProviders";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
@@ -13,11 +13,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <QueryProvider>
+        <AppProviders>
           <Navbar />
           <main>{children}</main>
           <Footer />
-        </QueryProvider>
+        </AppProviders>
       </body>
     </html>
   );
