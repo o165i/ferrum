@@ -16,8 +16,9 @@
   margin: 0 0 12px;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.13em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
 }
 
 .header h1 {
@@ -35,6 +36,36 @@
   background: var(--line);
 }
 
+.catalogBody {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 48px;
+}
+
+.filters {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: grid;
+  gap: 3px;
+}
+
+.filterGroup { display: grid; gap: 3px; }
+
+.filters button {
+  padding: 8px 6px 8px calc(6px + var(--filter-depth, 0) * 16px);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: 600 13px/1.2 var(--body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.filters button:hover { color: var(--fg); }
+.filters .filterActive { color: var(--fg); background: color-mix(in srgb, var(--fg) 8%, transparent); }
+.results { min-width: 0; }
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -45,8 +76,9 @@
   margin: 0 0 22px;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: .13em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .09em;
 }
 
 .status {
@@ -57,13 +89,18 @@
   gap: 12px;
   border: 1px solid var(--line);
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 11px;
+  font-family: var(--body);
+  font-size: 13px;
 }
 
 .status button { border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--fg); cursor: pointer; }
 
+.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 48px; }
+.pagination button { width: 38px; height: 38px; border: 1px solid var(--line); background: transparent; color: var(--muted); cursor: pointer; }
+.pagination button[aria-current="page"] { background: var(--fg); color: var(--bg); }
+
 @media (max-width: 900px) {
+  .catalogBody { grid-template-columns: 150px minmax(0, 1fr); gap: 24px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -71,5 +108,9 @@
   .catalog { width: min(100% - 28px, 1280px); padding: 48px 0 64px; }
   .header { align-items: flex-start; flex-direction: column; }
   .header span { margin: 0; }
+  .catalogBody { display: block; }
+  .filters { position: static; display: flex; overflow-x: auto; gap: 4px; margin-bottom: 28px; padding-bottom: 8px; }
+  .filterGroup { display: contents; }
+  .filters button { flex: 0 0 auto; padding: 9px 12px; border: 1px solid var(--line); }
   .grid { gap: 36px 12px; }
 }

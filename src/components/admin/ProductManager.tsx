@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ProductEditor } from "@/components/admin/ProductEditor";
 import type { AdminProduct } from "@/types/admin";
+import { PRODUCT_CATEGORY_LABELS } from "@/types/product";
 import styles from "./AdminDashboard.module.css";
 
 const formatPrice = (cents: number) =>
@@ -68,7 +69,7 @@ export function ProductManager({ initialProducts }: { initialProducts: AdminProd
             {products.map((product) => (
               <tr key={product.id}>
                 <td><strong>{product.ref}</strong><span>{product.name}</span></td>
-                <td>{product.category}</td>
+                <td>{PRODUCT_CATEGORY_LABELS[product.category]}</td>
                 <td>{formatPrice(product.saleCents ?? product.priceCents)}</td>
                 <td>{product.stock}</td>
                 <td><span className={product.isActive ? styles.active : styles.inactive}>{product.isActive ? "Active" : "Inactive"}</span></td>
