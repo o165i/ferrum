@@ -18,16 +18,19 @@ const PRODUCTS: {
   imgA: string;
   imgB: string;
 }[] = [
-  { ref: "FR-014", name: "HAZARD ANORAK", slug: "hazard-anorak", category: "OUTERWEAR", color: "BLACK", priceCents: 34000, saleCents: null, popularityScore: 96, imgA: "ferrum-anorak-a", imgB: "ferrum-anorak-b" },
-  { ref: "FR-021", name: "SLAG COAT", slug: "slag-coat", category: "OUTERWEAR", color: "GREY", priceCents: 62000, saleCents: 48000, popularityScore: 88, imgA: "ferrum-coat-a", imgB: "ferrum-coat-b" },
-  { ref: "FR-032", name: "CINDER KNIT", slug: "cinder-knit", category: "KNITWEAR", color: "BLACK", priceCents: 18000, saleCents: null, popularityScore: 91, imgA: "ferrum-knit-a", imgB: "ferrum-knit-b" },
-  { ref: "FR-035", name: "ASH CABLE SWEATER", slug: "ash-cable-sweater", category: "KNITWEAR", color: "BONE", priceCents: 21000, saleCents: null, popularityScore: 72, imgA: "ferrum-cable-a", imgB: "ferrum-cable-b" },
-  { ref: "FR-041", name: "RUST WASH DENIM", slug: "rust-wash-denim", category: "DENIM", color: "RUST", priceCents: 23000, saleCents: null, popularityScore: 84, imgA: "ferrum-denim1-a", imgB: "ferrum-denim1-b" },
-  { ref: "FR-044", name: "SCRAP CARGO", slug: "scrap-cargo", category: "DENIM", color: "BLACK", priceCents: 26000, saleCents: 19000, popularityScore: 98, imgA: "ferrum-cargo-a", imgB: "ferrum-cargo-b" },
-  { ref: "FR-051", name: "MANIFEST TEE", slug: "manifest-tee", category: "TOPS", color: "BONE", priceCents: 9000, saleCents: null, popularityScore: 79, imgA: "ferrum-tee-a", imgB: "ferrum-tee-b" },
-  { ref: "FR-053", name: "FREIGHT HOODIE", slug: "freight-hoodie", category: "TOPS", color: "BLACK", priceCents: 21000, saleCents: null, popularityScore: 94, imgA: "ferrum-hoodie-a", imgB: "ferrum-hoodie-b" },
+  { ref: "FR-014", name: "HAZARD ANORAK", slug: "hazard-anorak", category: "ZIP_HOODIES", color: "BLACK", priceCents: 34000, saleCents: null, popularityScore: 96, imgA: "ferrum-anorak-a", imgB: "ferrum-anorak-b" },
+  { ref: "FR-021", name: "SLAG COAT", slug: "slag-coat", category: "HOODIES", color: "GREY", priceCents: 62000, saleCents: 48000, popularityScore: 88, imgA: "ferrum-coat-a", imgB: "ferrum-coat-b" },
+  { ref: "FR-032", name: "CINDER KNIT", slug: "cinder-knit", category: "HOODIES", color: "BLACK", priceCents: 18000, saleCents: null, popularityScore: 91, imgA: "ferrum-knit-a", imgB: "ferrum-knit-b" },
+  { ref: "FR-035", name: "ASH CABLE SWEATER", slug: "ash-cable-sweater", category: "HOODIES", color: "BONE", priceCents: 21000, saleCents: null, popularityScore: 72, imgA: "ferrum-cable-a", imgB: "ferrum-cable-b" },
+  { ref: "FR-041", name: "RUST WASH DENIM", slug: "rust-wash-denim", category: "JEANS", color: "RUST", priceCents: 23000, saleCents: null, popularityScore: 84, imgA: "ferrum-denim1-a", imgB: "ferrum-denim1-b" },
+  { ref: "FR-044", name: "SCRAP CARGO", slug: "scrap-cargo", category: "SWEATPANTS", color: "BLACK", priceCents: 26000, saleCents: 19000, popularityScore: 98, imgA: "ferrum-cargo-a", imgB: "ferrum-cargo-b" },
+  { ref: "FR-051", name: "MANIFEST TEE", slug: "manifest-tee", category: "T_SHIRTS", color: "BONE", priceCents: 9000, saleCents: null, popularityScore: 79, imgA: "ferrum-tee-a", imgB: "ferrum-tee-b" },
+  { ref: "FR-053", name: "FREIGHT HOODIE", slug: "freight-hoodie", category: "HOODIES", color: "BLACK", priceCents: 21000, saleCents: null, popularityScore: 94, imgA: "ferrum-hoodie-a", imgB: "ferrum-hoodie-b" },
   { ref: "FR-061", name: "STEEL CHAIN", slug: "steel-chain", category: "ACCESSORIES", color: "GREY", priceCents: 6000, saleCents: null, popularityScore: 68, imgA: "ferrum-chain-a", imgB: "ferrum-chain-b" },
   { ref: "FR-064", name: "CONCRETE CAP", slug: "concrete-cap", category: "ACCESSORIES", color: "BLACK", priceCents: 7000, saleCents: null, popularityScore: 76, imgA: "ferrum-cap-a", imgB: "ferrum-cap-b" },
+  { ref: "FR-071", name: "WELD ZIP HOODIE", slug: "weld-zip-hoodie", category: "ZIP_HOODIES", color: "RUST", priceCents: 24000, saleCents: null, popularityScore: 83, imgA: "ferrum-zip-a", imgB: "ferrum-zip-b" },
+  { ref: "FR-074", name: "FOUNDRY SHORTS", slug: "foundry-shorts", category: "SHORTS", color: "BLACK", priceCents: 12000, saleCents: null, popularityScore: 75, imgA: "ferrum-shorts-a", imgB: "ferrum-shorts-b" },
+  { ref: "FR-077", name: "FORGE SWEATPANTS", slug: "forge-sweatpants", category: "SWEATPANTS", color: "GREY", priceCents: 17000, saleCents: null, popularityScore: 87, imgA: "ferrum-sweatpants-a", imgB: "ferrum-sweatpants-b" },
 ];
 
 async function main() {
@@ -59,7 +62,7 @@ async function main() {
   for (const p of PRODUCTS) {
     await prisma.product.upsert({
       where: { ref: p.ref },
-      update: { popularityScore: p.popularityScore },
+      update: { category: p.category, popularityScore: p.popularityScore },
       create: {
         ref: p.ref,
         name: p.name,

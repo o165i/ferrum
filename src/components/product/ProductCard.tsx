@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Product } from "@/types/product";
+import { PRODUCT_CATEGORY_LABELS, type Product } from "@/types/product";
 import { AddToBag } from "@/components/cart/AddToBag";
 import styles from "./ProductCard.module.css";
 
@@ -20,7 +20,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div className={styles.manifest}><span>{product.ref}</span><span>{product.color}</span></div>
       </div>
       <div className={styles.info}>
-        <div><h3>{product.name}</h3><p>{product.category}</p></div>
+        <div><h3>{product.name}</h3><p>{PRODUCT_CATEGORY_LABELS[product.category]}</p></div>
         <div className={styles.prices}>{product.saleCents !== null ? <><del>{formatPrice(product.priceCents)}</del><strong>{formatPrice(product.saleCents)}</strong></> : <span>{formatPrice(product.priceCents)}</span>}</div>
       </div>
       <AddToBag product={product} />
