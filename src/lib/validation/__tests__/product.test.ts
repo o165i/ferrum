@@ -6,7 +6,7 @@ describe("createProductSchema", () => {
     ref: "FR-100",
     name: "TEST JACKET",
     slug: "test-jacket",
-    category: "OUTERWEAR" as const,
+    category: "ZIP_HOODIES" as const,
     color: "BLACK",
     priceCents: 10000,
   };
@@ -35,7 +35,7 @@ describe("createProductSchema", () => {
 describe("listProductsQuerySchema", () => {
   it("applies defaults when nothing is provided", () => {
     const result = listProductsQuerySchema.parse({});
-    expect(result).toEqual({ sort: "newest", page: 1, pageSize: 20 });
+    expect(result).toEqual({ catalog: "all", sort: "newest", page: 1, pageSize: 20 });
   });
 
   it("coerces page/pageSize from query string values", () => {
@@ -52,5 +52,15 @@ describe("listProductsQuerySchema", () => {
   it("accepts popular sorting", () => {
     const result = listProductsQuerySchema.parse({ sort: "popular" });
     expect(result.sort).toBe("popular");
+  });
+
+  it("accepts a parent catalog filter", () => {
+    const result = listProductsQuerySchema.parse({ catalog: "pants" });
+    expect(result.catalog).toBe("pants");
+  });
+
+  it("rejects combining a leaf category with a catalog branch", () => {
+    const result = listProductsQuerySchema.safeParse({ category: "JEANS", catalog: "pants" });
+    expect(result.success).toBe(false);
   });
 });

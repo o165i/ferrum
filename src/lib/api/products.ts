@@ -1,7 +1,8 @@
-import type { ProductCategory, ProductSort, ProductsResponse } from "@/types/product";
+import type { CatalogFilter, ProductCategory, ProductSort, ProductsResponse } from "@/types/product";
 
 export interface ProductsQuery {
   category?: ProductCategory;
+  catalog?: CatalogFilter;
   color?: string;
   search?: string;
   sort?: ProductSort;
@@ -12,6 +13,7 @@ export interface ProductsQuery {
 export async function fetchProducts(query: ProductsQuery, signal?: AbortSignal): Promise<ProductsResponse> {
   const params = new URLSearchParams();
   if (query.category) params.set("category", query.category);
+  if (query.catalog && query.catalog !== "all") params.set("catalog", query.catalog);
   if (query.color) params.set("color", query.color);
   if (query.search) params.set("search", query.search);
   if (query.sort) params.set("sort", query.sort);

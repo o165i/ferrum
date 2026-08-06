@@ -1,11 +1,27 @@
 import { z } from "zod";
 
 export const productCategoryEnum = z.enum([
-  "OUTERWEAR",
-  "KNITWEAR",
-  "DENIM",
-  "TOPS",
+  "T_SHIRTS",
+  "ZIP_HOODIES",
+  "HOODIES",
+  "JEANS",
+  "SHORTS",
+  "SWEATPANTS",
   "ACCESSORIES",
+]);
+
+export const catalogFilterEnum = z.enum([
+  "all",
+  "upperwear",
+  "t-shirts",
+  "zip-hoodies",
+  "hoodies",
+  "lowerwear",
+  "pants",
+  "jeans",
+  "shorts",
+  "sweatpants",
+  "other",
 ]);
 
 export const createProductSchema = z.object({
@@ -33,11 +49,14 @@ export const updateProductSchema = createProductSchema.partial();
 
 export const listProductsQuerySchema = z.object({
   category: productCategoryEnum.optional(),
+  catalog: catalogFilterEnum.default("all"),
   color: z.string().trim().optional(),
   search: z.string().trim().max(100).optional(),
   sort: z.enum(["price_asc", "price_desc", "newest", "popular"]).default("newest"),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(50).default(20),
+}).refine((query) => !(query.category && query.catalog !== "all"), {
+  message: "Use either category or catalog, not both",
 });
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;

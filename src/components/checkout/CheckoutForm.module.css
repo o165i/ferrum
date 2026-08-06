@@ -11,8 +11,9 @@
   margin: 0;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.13em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
@@ -52,7 +53,7 @@
   margin-right: 12px;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .grid {
@@ -66,9 +67,10 @@
   display: grid;
   gap: 8px;
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
@@ -106,8 +108,8 @@
 
 .paymentChoices input { accent-color: var(--accent); }
 .paymentChoices strong, .paymentChoices small { display: block; }
-.paymentChoices strong { color: var(--fg); font-size: 12px; }
-.paymentChoices small { margin-top: 5px; color: var(--muted); line-height: 1.5; }
+.paymentChoices strong { color: var(--fg); font-size: 14px; }
+.paymentChoices small { margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.55; }
 
 .summary {
   position: sticky;
@@ -118,10 +120,10 @@
 
 .summary h2 { margin: 0 0 22px; font-size: 15px; font-weight: 500; }
 .summary ul { margin: 0; padding: 0; list-style: none; }
-.summary li, .total { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding: 13px 0; font-size: 11px; }
+.summary li, .total { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding: 13px 0; font-size: 13px; }
 .summary li span { color: var(--muted); }
 .total { margin-top: 8px; font-size: 15px; }
-.summary > p { color: var(--muted); font-size: 10px; line-height: 1.6; }
+.summary > p { color: var(--muted); font-size: 13px; line-height: 1.6; }
 .summary .error { color: var(--accent); }
 
 .summary button {
@@ -132,9 +134,10 @@
   background: var(--fg);
   color: var(--bg);
   cursor: pointer;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 

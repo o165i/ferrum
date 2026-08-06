@@ -2,7 +2,7 @@
 .heroImage { object-fit: cover; filter: grayscale(1) contrast(1.12) brightness(0.68); }
 .heroShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,10,.04) 34%, rgba(11,11,10,.88) 100%); }
 .heroContent { position: relative; z-index: 1; width: min(100% - 40px, 1280px); min-height: min(78vh, 860px); margin: 0 auto; padding-bottom: 62px; display: flex; flex-direction: column; justify-content: flex-end; }
-.eyebrow,.sectionKicker,.runNote { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+.eyebrow,.sectionKicker,.runNote { color: var(--muted); font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .09em; line-height: 1.45; text-transform: uppercase; }
 .eyebrow { margin: 0 0 10px; }
 .heroTitle,.sectionTitle { margin: 0; font-family: var(--display); font-weight: 900; letter-spacing: .015em; line-height: .88; text-transform: uppercase; }
 .heroTitle { font-size: clamp(76px,14.5vw,210px); }
@@ -12,11 +12,11 @@
 .sectionKicker { margin: 0 0 10px; }
 .sectionTitle { font-size: clamp(34px,4vw,56px); }
 .modeTabs { display: flex; border: 1px solid var(--line); }
-.modeTabs button { border: 0; padding: 10px 14px; background: transparent; color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.modeTabs button { border: 0; padding: 11px 16px; background: transparent; color: var(--muted); font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; }
 .modeTabs button + button { border-left: 1px solid var(--line); }
 .modeTabs .modeActive { background: var(--fg); color: var(--bg); }
 .productGrid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
-.status { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 11px; }
+.status { min-height: 260px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 1px solid var(--line); color: var(--muted); font-family: var(--body); font-size: 13px; }
 .status button { border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--fg); cursor: pointer; }
 @media (max-width:900px) { .productGrid { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 40px; } }
 @media (max-width:680px) {

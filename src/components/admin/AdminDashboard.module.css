@@ -1,13 +1,13 @@
 .page { width: min(100% - 40px, 1280px); margin: 0 auto; padding: 58px 0 110px; }
 .header { display: flex; justify-content: space-between; gap: 40px; align-items: flex-end; }
-.header p, .sectionHeader p { margin: 0; color: var(--accent); font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+.header p, .sectionHeader p { margin: 0; color: var(--accent); font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; }
 .header h1 { margin: 8px 0 0; font-size: clamp(42px, 7vw, 80px); font-weight: 500; }
 .metrics { display: flex; gap: 28px; margin: 0 0 8px; }
 .metrics div { display: grid; gap: 7px; }
-.metrics dt { color: var(--muted); font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
+.metrics dt { color: var(--muted); font-family: var(--body); font-size: 12px; font-weight: 550; text-transform: uppercase; }
 .metrics dd { margin: 0; font-size: 24px; }
 .tabs { display: flex; gap: 8px; margin: 42px 0; border-bottom: 1px solid var(--line); }
-.tabs button, .sectionHeader button, .rowActions button, .editor button, .orderActions button { border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.tabs button, .sectionHeader button, .rowActions button, .editor button, .orderActions button { border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .tabs button { min-width: 120px; border-bottom: 0; padding: 13px 18px; }
 .tabs button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
 .sectionHeader { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; margin-bottom: 22px; }
@@ -16,11 +16,11 @@
 .error { border: 1px solid var(--accent); padding: 12px; color: var(--accent); font-size: 12px; }
 .tableWrap { overflow-x: auto; }
 .tableWrap table { width: 100%; border-collapse: collapse; min-width: 780px; }
-.tableWrap th, .tableWrap td { border-bottom: 1px solid var(--line); padding: 14px 10px; text-align: left; font-size: 11px; }
-.tableWrap th { color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.tableWrap th, .tableWrap td { border-bottom: 1px solid var(--line); padding: 14px 10px; text-align: left; font-size: 13px; }
+.tableWrap th { color: var(--muted); font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .tableWrap td:first-child { display: grid; gap: 4px; }
-.tableWrap td:first-child strong { font-family: var(--mono); font-size: 9px; color: var(--muted); }
-.active, .inactive, .pending, .confirmed, .cancelled { display: inline-block; padding: 5px 7px; border: 1px solid var(--line); font-family: var(--mono); font-size: 8px; text-transform: uppercase; }
+.tableWrap td:first-child strong { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.active, .inactive, .pending, .confirmed, .cancelled { display: inline-block; padding: 5px 7px; border: 1px solid var(--line); font-family: var(--body); font-size: 10px; font-weight: 600; text-transform: uppercase; }
 .active, .confirmed { border-color: #6d8f72; color: #8eb896; }
 .inactive, .cancelled { color: var(--muted); }
 .pending { border-color: var(--accent); color: var(--accent); }
@@ -31,7 +31,7 @@
 .editorHeading h3 { margin: 0; font-size: 18px; font-weight: 500; }
 .editorHeading button { border: 0; color: var(--muted); }
 .formGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.formGrid label { display: grid; gap: 7px; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+.formGrid label { display: grid; gap: 7px; color: var(--muted); font-family: var(--body); font-size: 12px; font-weight: 550; letter-spacing: .04em; text-transform: uppercase; }
 .formGrid input, .formGrid select, .formGrid textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 0; padding: 10px; background: var(--bg); color: var(--fg); font: inherit; text-transform: none; }
 .formGrid textarea { resize: vertical; }
 .formGrid .full { grid-column: 1 / -1; }
@@ -43,9 +43,9 @@
 .orderCard { border: 1px solid var(--line); padding: 20px; }
 .orderCard > header { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; }
 .orderCard > header div { display: grid; gap: 5px; }
-.orderCard > header span, .orderGrid p { color: var(--muted); font-family: var(--mono); font-size: 9px; }
+.orderCard > header span, .orderGrid p { color: var(--muted); font-family: var(--body); font-size: 12px; }
 .orderGrid { display: grid; grid-template-columns: 1.1fr 1.3fr 1.4fr .8fr; gap: 26px; margin-top: 22px; border-top: 1px solid var(--line); padding-top: 18px; }
-.orderGrid h3 { margin: 0 0 10px; color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.orderGrid h3 { margin: 0 0 10px; color: var(--muted); font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .orderGrid p { margin: 4px 0; line-height: 1.5; }
 .orderActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 .orderActions button { padding: 9px 12px; }

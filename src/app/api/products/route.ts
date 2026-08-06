@@ -5,6 +5,7 @@ import { requireAdmin } from "@/lib/session";
 import { toErrorResponse } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import type { Prisma } from "@prisma/client";
+import { CATALOG_FILTERS } from "@/types/product";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,11 @@ export async function GET(req: Request) {
 
     const where: Prisma.ProductWhereInput = {
       isActive: true,
-      ...(query.category ? { category: query.category } : {}),
+      ...(query.category
+        ? { category: query.category }
+        : query.catalog !== "all"
+          ? { category: { in: [...CATALOG_FILTERS[query.catalog]] } }
+          : {}),
       ...(query.color ? { color: { equals: query.color, mode: "insensitive" } } : {}),
       ...(query.search
         ? { name: { contains: query.search, mode: "insensitive" as const } }
