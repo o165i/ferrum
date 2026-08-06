@@ -17,7 +17,7 @@ export interface AdminOrder {
   id: string;
   orderNumber: string;
   status: "PENDING" | "CONFIRMED" | "CANCELLED";
-  paymentMethod: "CASH_ON_DELIVERY" | "BANK_TRANSFER";
+  paymentMethod: "CASH_ON_DELIVERY" | "BANK_TRANSFER" | "PAYPAL";
   contactName: string;
   contactEmail: string;
   phone: string;

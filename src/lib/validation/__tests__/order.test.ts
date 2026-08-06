@@ -35,6 +35,14 @@ describe("createOrderSchema", () => {
   it("rejects unsupported payment methods", () => {
     expect(() => createOrderSchema.parse({ ...validOrder, paymentMethod: "CARD" })).toThrow();
   });
+
+  it("rejects cash on delivery", () => {
+    expect(() => createOrderSchema.parse({ ...validOrder, paymentMethod: "CASH_ON_DELIVERY" })).toThrow();
+  });
+
+  it("does not create an unpaid PayPal order through the bank transfer endpoint", () => {
+    expect(() => createOrderSchema.parse({ ...validOrder, paymentMethod: "PAYPAL" })).toThrow();
+  });
 });
 
 describe("updateOrderStatusSchema", () => {

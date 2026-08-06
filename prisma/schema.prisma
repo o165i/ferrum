@@ -30,6 +30,7 @@ enum OrderStatus {
 enum PaymentMethod {
   CASH_ON_DELIVERY
   BANK_TRANSFER
+  PAYPAL
 }
 
 model User {

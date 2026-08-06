@@ -140,6 +140,20 @@
 
 .summary button:disabled { cursor: wait; opacity: 0.55; }
 
+.summary .paypalButton {
+  background: #ffc439;
+  color: #003087;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-style: italic;
+  letter-spacing: -0.06em;
+  text-transform: none;
+}
+
+.summary .paypalButton:disabled { cursor: not-allowed; opacity: 0.72; }
+.paypalButton strong { color: #0070ba; }
+.summary .setupNote { margin-bottom: 0; text-align: center; }
+
 @media (max-width: 780px) {
   .layout { grid-template-columns: 1fr; gap: 34px; }
   .summary { position: static; }

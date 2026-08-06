@@ -16,7 +16,9 @@ export const createOrderSchema = z
     city: z.string().trim().min(2).max(100),
     postalCode: z.string().trim().min(2).max(20),
     country: z.string().trim().min(2).max(80),
-    paymentMethod: z.enum(["CASH_ON_DELIVERY", "BANK_TRANSFER"]),
+    // PayPal orders must only be created after a verified server-side capture.
+    // Until that flow is connected, this endpoint accepts bank transfers only.
+    paymentMethod: z.literal("BANK_TRANSFER"),
     items: z.array(orderItemSchema).min(1).max(30),
   })
   .superRefine((data, context) => {
