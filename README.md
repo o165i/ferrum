@@ -1,93 +1,200 @@
-# saitik
+# FERRUM — backend skeleton
 
+Рабочий, запускаемый локально бэкенд-скелет для проекта FERRUM.
+Это **первая итерация** (Requirements → Architecture → Database → Backend/API → Auth),
+согласно шагам 1–5 из технического задания. Frontend-прототип (`ferrum-prototype.jsx`)
+пока не подключён к API — это следующий шаг.
 
+## 1. Стек и почему он выбран
 
-## Getting started
+| Слой | Технология | Почему |
+|---|---|---|
+| Framework | Next.js 14 (App Router) + TypeScript | Frontend и Backend в одном репозитории, API-роуты как serverless-функции, легко деплоится в контейнер |
+| DB | PostgreSQL | Персистентная реляционная БД, требование задания |
+| ORM | Prisma | Миграции, типобезопасность, готовый `Prisma.PrismaClientKnownRequestError` для обработки ошибок БД |
+| Auth | Auth.js (next-auth v4), Credentials + JWT-сессии | Проверенная библиотека, не пишем свою криптографию; JWT — потому что Credentials provider в NextAuth v4 официально несовместим с database sessions |
+| Валидация | Zod | Единая схема валидации на входе каждого API-роута |
+| Пароли | bcryptjs | Хэширование с солью, 12 раундов |
+| Логи | pino | Структурированные JSON-логи в stdout — то, что ожидает Docker/Kubernetes |
+| Тесты | Vitest | Быстрый unit-test раннер, совместимый с TS/ESM из коробки |
+| Контейнеризация | Docker + docker-compose | app + postgres, multi-stage build, `output: "standalone"` |
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## 2. Структура проекта
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/o165i/saitik.git
-git branch -M main
-git push -uf origin main
+src/
+  app/
+    api/
+      health/route.ts              GET  /api/health
+      auth/register/route.ts       POST /api/auth/register
+      auth/[...nextauth]/route.ts  Auth.js (signin/signout/session)
+      products/route.ts            GET, POST /api/products
+      products/[id]/route.ts       GET, PUT, DELETE /api/products/:id
+    layout.tsx, page.tsx           временная стартовая страница
+  lib/
+    env.ts                        валидация переменных окружения при старте
+    logger.ts                     pino-логгер
+    errors.ts                     доменные ошибки + единый маппинг в HTTP-ответ
+    prisma.ts                     singleton Prisma-клиент
+    auth.ts                       конфигурация Auth.js
+    session.ts                    requireAuth() / requireAdmin() хелперы
+    validation/
+      auth.ts                     Zod-схемы регистрации
+      product.ts                  Zod-схемы CRUD и списка товаров
+  types/next-auth.d.ts             типы session.user.id / role
+prisma/
+  schema.prisma                   модели User, Product
+  seed.ts                         тестовые пользователи + товары из прототипа
+Dockerfile
+docker-compose.yml
+.env.example
 ```
 
-## Integrate with your tools
+Разделение ответственности: UI (`app/`) отдельно от бизнес-логики и доступа к БД (`lib/`, `prisma/`),
+валидация отдельно от обработчиков роутов, ошибки — через единый `toErrorResponse`.
 
-* [Set up project integrations](https://gitlab.com/o165i/saitik/-/settings/integrations)
+## 3. Модель данных
 
-## Collaborate with your team
+```
+User
+ ├─ id            String (cuid)
+ ├─ email         String  @unique
+ ├─ passwordHash  String
+ ├─ name          String?
+ ├─ role          USER | ADMIN
+ └─ createdAt / updatedAt
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+Product
+ ├─ id            String (cuid)
+ ├─ ref           String  @unique     (напр. "FR-014")
+ ├─ name, slug
+ ├─ category      OUTERWEAR | KNITWEAR | DENIM | TOPS | ACCESSORIES
+ ├─ color
+ ├─ priceCents / saleCents            (деньги в центах, без float)
+ ├─ description, sizes[], images[]
+ ├─ stock, isActive
+ └─ createdAt / updatedAt
+```
 
-## Test and Deploy
+`isActive` используется для soft delete — `DELETE /api/products/:id` не стирает
+строку из БД, а помечает товар неактивным (история заказов в будущем не сломается).
 
-Use the built-in continuous integration in GitLab.
+## 4. API
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+| Метод | Путь | Доступ | Описание |
+|---|---|---|---|
+| GET | `/api/health` | public | статус приложения + доступность БД |
+| POST | `/api/auth/register` | public | регистрация, роль всегда `USER` |
+| POST | `/api/auth/callback/credentials` | public | логин (через Auth.js) |
+| POST | `/api/auth/signout` | authenticated | логаут (через Auth.js) |
+| GET | `/api/products` | public | список: `?category=&color=&search=&sort=price_asc\|price_desc\|newest&page=&pageSize=` |
+| POST | `/api/products` | ADMIN | создать товар |
+| GET | `/api/products/:id` | public | один товар |
+| PUT | `/api/products/:id` | ADMIN | обновить товар |
+| DELETE | `/api/products/:id` | ADMIN | деактивировать товар (soft delete) |
 
-***
+Ошибки — всегда в формате `{ "error": { "code": "...", "message": "...", "issues"?: ... } }`
+и правильные статусы: 400 / 401 / 403 / 404 / 409 / 500. Наружу никогда не уходят
+stack trace, данные подключения к БД или прочие внутренности — см. `lib/errors.ts`.
 
-# Editing this README
+## 5. Локальный запуск
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Вариант А — одна команда (рекомендуется)
 
-## Suggestions for a good README
+Нужен только Docker. `npm install`, генерация Prisma-клиента, миграции и сид —
+всё автоматически.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```bash
+# macOS / Linux / Git Bash / WSL
+./scripts/dev-up.sh
 
-## Name
-Choose a self-explaining name for your project.
+# Windows PowerShell
+.\scripts\dev-up.ps1
+```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Что происходит внутри:
+1. Если `.env` нет — копируется из `.env.example`, `NEXTAUTH_SECRET` генерируется сам.
+2. `docker compose up -d --build` поднимает Postgres и приложение.
+3. Контейнер приложения при **каждом старте** сам применяет непримененные
+   миграции (`prisma migrate deploy` внутри `docker-entrypoint.sh`) — руками
+   это больше не нужно.
+4. Разово прогоняется сид (`docker compose --profile tools run --rm seed`) —
+   сам по себе при обычном `up` он не запускается, только явной командой.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Готово: `http://localhost:3000`.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Вариант Б — руками, но всё ещё через Docker
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```bash
+cp .env.example .env
+# впиши NEXTAUTH_SECRET (например: openssl rand -base64 32)
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+docker compose up -d --build                   # db + app, миграции применятся сами
+docker compose --profile tools run --rm seed   # один раз — тестовые данные
+```
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Вариант В — Node локально, Postgres в Docker (для дебага без пересборки образа)
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```bash
+npm install
+cp .env.example .env
+# в .env поменять DATABASE_URL хост "db" -> "localhost"
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+docker compose up -d db
+npx prisma migrate dev --name init
+npm run db:seed
+npm run dev
+```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Тестовые пользователи после сида:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+- `admin@ferrum.dev` / `Admin123!` (роль ADMIN)
+- `user@ferrum.dev` / `User123!` (роль USER)
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### Проверить, что всё работает
 
-## License
-For open source projects, say how it is licensed.
+```bash
+curl http://localhost:3000/api/health
+curl http://localhost:3000/api/products
+```
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## 6. CI/CD
+
+`.gitlab-ci.yml` — на каждый push/MR: `install` (npm ci + prisma generate) →
+`check` (lint, unit-тесты, `prisma validate` — параллельно) → `build` (`next build`) →
+`docker-build` (сборка образа через docker:dind, только для `main` и merge request'ов).
+Ничего не деплоит — это проверочный пайплайн (CI); деплой (CD, `deploy`-stage
+с `environment:` и т.п.) добавим отдельно, когда определитесь с хостингом/registry.
+
+`npm ci` в пайплайне не спотыкается об интерактивное подтверждение install-скриптов
+Prisma — они заранее разрешены в `package.json` через поле `allowScripts`
+(современный npm с версии ~11 требует явного разрешения на выполнение
+post/preinstall-скриптов пакетов — это защита от supply-chain атак).
+
+## 7. Тесты
+
+```bash
+npm test
+```
+
+Пока покрыты Zod-схемы валидации (`src/lib/validation/__tests__`). Следующий шаг —
+integration-тесты на API-роуты (регистрация → логин → создание товара админом)
+и позже E2E на весь пользовательский сценарий.
+
+## 8. Известные ограничения этой итерации
+
+- Frontend ещё живёт отдельно как прототип (`ferrum-prototype.jsx`) и не подключён
+  к этому API — это следующий этап работы.
+- Нет сущности заказа/корзины — CRUD пока только для `Product`. Полноценный
+  lifecycle (Cart → Order → Payment status) добавляется отдельным шагом,
+  чтобы не смешивать несколько больших фич в одном PR.
+- `prisma migrate dev` создаст первую миграцию при первом запуске у каждого
+  разработчика — сам файл миграции в этот архив не включён, чтобы не подгонять
+  его под чужую версию Prisma engine.
+- Runtime-образ несёт с собой полный `node_modules` (а не урезанный
+  `output: "standalone"`), потому что `prisma migrate deploy` и сид должны
+  уметь выполняться прямо внутри контейнера при старте. Компромисс:
+  образ немного больше, зато миграции/сид не требуют ручных шагов ни локально,
+  ни в CI/CD.
+- Скрипты в `scripts/` уже с правами на исполнение в архиве; если git при
+  клонировании их сбросит — `chmod +x scripts/dev-up.sh docker-entrypoint.sh`.
