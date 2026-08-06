@@ -8,8 +8,9 @@
   margin: 0 0 10px;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
@@ -38,9 +39,10 @@
 
 .row dt {
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
@@ -86,8 +88,8 @@
 .orders span,
 .emptyOrders {
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 10px;
+  font-family: var(--body);
+  font-size: 12px;
 }
 
 @media (max-width: 680px) {

@@ -14,10 +14,12 @@ enum Role {
 }
 
 enum ProductCategory {
-  OUTERWEAR
-  KNITWEAR
-  DENIM
-  TOPS
+  T_SHIRTS
+  ZIP_HOODIES
+  HOODIES
+  JEANS
+  SHORTS
+  SWEATPANTS
   ACCESSORIES
 }
 

@@ -2,12 +2,12 @@
   --bg: #0b0b0a;
   --surface: #141412;
   --fg: #ece7dc;
-  --muted: #918d84;
+  --muted: #b5b0a5;
   --line: #2a2926;
   --accent: #ff3d1a;
   --display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
-  --body: Inter, Arial, Helvetica, sans-serif;
-  --mono: "IBM Plex Mono", "Courier New", monospace;
+  --body: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --mono: var(--font-geist-mono), "Courier New", monospace;
 }
 
 * {
@@ -25,6 +25,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -52,10 +54,10 @@ select {
   padding: 0 22px;
   background: var(--fg);
   color: var(--bg);
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: background 160ms ease, color 160ms ease;
 }

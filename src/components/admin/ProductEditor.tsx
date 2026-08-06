@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PRODUCT_CATEGORIES } from "@/types/product";
+import { PRODUCT_CATEGORIES, PRODUCT_CATEGORY_LABELS } from "@/types/product";
 import type { AdminProduct } from "@/types/admin";
 import styles from "./AdminDashboard.module.css";
 
@@ -68,7 +68,7 @@ export function ProductEditor({
         <label><span>Reference</span><input name="ref" defaultValue={product?.ref} required maxLength={20} /></label>
         <label><span>Name</span><input name="name" defaultValue={product?.name} required maxLength={120} /></label>
         <label><span>Slug</span><input name="slug" defaultValue={product?.slug} required pattern="[a-z0-9-]+" /></label>
-        <label><span>Category</span><select name="category" defaultValue={product?.category ?? PRODUCT_CATEGORIES[0]}>{PRODUCT_CATEGORIES.map((category) => <option key={category}>{category}</option>)}</select></label>
+        <label><span>Category</span><select name="category" defaultValue={product?.category ?? PRODUCT_CATEGORIES[0]}>{PRODUCT_CATEGORIES.map((category) => <option key={category} value={category}>{PRODUCT_CATEGORY_LABELS[category]}</option>)}</select></label>
         <label><span>Color</span><input name="color" defaultValue={product?.color} required /></label>
         <label><span>Regular price, EUR</span><input name="price" type="number" min="0.01" step="0.01" defaultValue={product ? product.priceCents / 100 : ""} required /></label>
         <label><span>Sale price, EUR (optional)</span><input name="salePrice" type="number" min="0.01" step="0.01" defaultValue={product?.saleCents ? product.saleCents / 100 : ""} /></label>
