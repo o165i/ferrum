@@ -176,8 +176,18 @@
   .product { width: min(100% - 28px, 1280px); padding: 28px 0 64px; }
   .layout { grid-template-columns: 1fr; gap: 36px; }
   .summary { position: static; }
-  .summary h1 { font-size: clamp(48px, 15vw, 72px); }
-  .galleryArrow { width: 42px; height: 42px; }
+  .summary h1 { font-size: clamp(42px, 14vw, 68px); }
+  .galleryArrow { width: 44px; height: 44px; }
   .galleryArrowPrevious { left: 12px; }
   .galleryArrowNext { right: 12px; }
+}
+
+@media (max-width: 480px) {
+  .breadcrumbs { margin-bottom: 20px; }
+  .thumbnails { gap: 5px; margin-top: 6px; }
+  .layout { gap: 30px; }
+  .description { margin: 24px 0; }
+  .specifications div { display: grid; gap: 6px; }
+  .specifications dd { text-align: left; overflow-wrap: anywhere; }
+  .purchase { margin-top: 26px; }
 }

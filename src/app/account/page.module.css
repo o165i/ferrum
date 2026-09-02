@@ -95,11 +95,16 @@
 @media (max-width: 680px) {
   .account {
     width: min(100% - 28px, 760px);
-    padding-top: 54px;
+    padding: 54px 0 76px;
   }
 
   .row {
     grid-template-columns: 1fr;
     gap: 8px;
   }
+}
+
+@media (max-width: 480px) {
+  .orders li { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .orders li > div:last-child { text-align: left; }
 }

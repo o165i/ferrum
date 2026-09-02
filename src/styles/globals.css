@@ -20,8 +20,10 @@ html {
 }
 
 body {
+  max-width: 100%;
   min-height: 100vh;
   margin: 0;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--body);
@@ -41,7 +43,9 @@ a {
 
 button,
 input,
-select {
+select,
+textarea {
+  min-width: 0;
   font: inherit;
 }
 
@@ -76,4 +80,16 @@ select {
 ::selection {
   background: var(--accent);
   color: var(--bg);
+}
+
+@media (max-width: 680px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .primaryAction {
+    min-height: 48px;
+  }
 }

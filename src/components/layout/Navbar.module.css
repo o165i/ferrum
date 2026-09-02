@@ -131,6 +131,12 @@
     padding: 0 0 11px;
   }
 
+  .navLink {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
   .actions {
     gap: 10px;
   }
@@ -140,6 +146,22 @@
   }
 
   .accountLink {
+    display: inline-flex;
     max-width: 100px;
+    min-height: 44px;
+    align-items: center;
   }
+
+  .bag {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo { font-size: 21px; }
+  .nav { gap: 18px; }
+  .actions { gap: 6px; }
+  .accountLink { max-width: 76px; }
 }
