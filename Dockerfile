@@ -13,6 +13,7 @@ RUN npm ci --omit=dev
 # ---- build: компилируем Next.js ----
 FROM node:20-alpine AS build
 WORKDIR /app
+RUN apk add --no-cache openssl
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
@@ -30,6 +31,7 @@ COPY --from=build /app/public ./public
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/package.json ./package.json
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
+RUN npx prisma generate
 RUN chmod +x ./docker-entrypoint.sh && chown -R nextjs:nodejs /app
 
 USER nextjs

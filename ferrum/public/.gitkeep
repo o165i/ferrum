@@ -1,0 +1,1 @@
+This directory is intentionally kept in git (and thus in the Docker build context) so Next.js has a public/ folder to serve static assets from, and so the Dockerfile's COPY --from=build /app/public step has something to copy.

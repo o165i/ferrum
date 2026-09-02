@@ -17,6 +17,8 @@ const formatPrice = (cents: number) =>
 export function ProductDetails({ product }: { product: Product }) {
   const [selectedImage, setSelectedImage] = useState(0);
   const currentImage = product.images[selectedImage] ?? product.images[0];
+  const hasPreviousImage = selectedImage > 0;
+  const hasNextImage = selectedImage < product.images.length - 1;
 
   return (
     <article className={styles.product}>
@@ -39,6 +41,28 @@ export function ProductDetails({ product }: { product: Product }) {
                 priority
                 sizes="(max-width: 800px) 100vw, 58vw"
               />
+            ) : null}
+
+            {hasPreviousImage ? (
+              <button
+                type="button"
+                className={`${styles.galleryArrow} ${styles.galleryArrowPrevious}`}
+                aria-label="Show previous product image"
+                onClick={() => setSelectedImage((index) => index - 1)}
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+            ) : null}
+
+            {hasNextImage ? (
+              <button
+                type="button"
+                className={`${styles.galleryArrow} ${styles.galleryArrowNext}`}
+                aria-label="Show next product image"
+                onClick={() => setSelectedImage((index) => index + 1)}
+              >
+                <span aria-hidden="true">→</span>
+              </button>
             ) : null}
           </div>
 

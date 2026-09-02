@@ -1,0 +1,57 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ProductCategory {
+  OUTERWEAR
+  KNITWEAR
+  DENIM
+  TOPS
+  ACCESSORIES
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Product {
+  id          String          @id @default(cuid())
+  ref         String          @unique
+  name        String
+  slug        String          @unique
+  category    ProductCategory
+  color       String
+  // prices stored in minor units (cents) to avoid float rounding issues
+  priceCents  Int
+  saleCents   Int?
+  description String          @default("")
+  sizes       String[]        @default([])
+  images      String[]        @default([])
+  stock       Int             @default(0)
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([category])
+  @@index([isActive])
+  @@map("products")
+}
