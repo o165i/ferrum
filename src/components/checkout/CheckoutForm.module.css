@@ -163,7 +163,10 @@
 }
 
 @media (max-width: 540px) {
-  .page { width: min(100% - 28px, 1180px); padding-top: 52px; }
+  .page { width: min(100% - 28px, 1180px); padding: 52px 0 76px; }
   .grid { grid-template-columns: 1fr; }
   .full { grid-column: auto; }
+  .formSections { gap: 34px; }
+  .paymentChoices label { padding: 14px; }
+  .summary { padding: 20px; }
 }

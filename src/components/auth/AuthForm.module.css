@@ -115,6 +115,9 @@
 @media (max-width: 680px) {
   .page {
     width: min(100% - 28px, 520px);
-    padding-top: 54px;
+    padding: 54px 0 76px;
   }
+
+  .title { font-size: clamp(48px, 16vw, 68px); }
+  .input, .submit { min-height: 50px; }
 }

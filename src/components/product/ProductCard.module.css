@@ -3,10 +3,16 @@
 }
 
 .imageFrame {
+  display: block;
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   background: var(--surface);
+}
+
+.info h3 a:hover,
+.info h3 a:focus-visible {
+  color: var(--accent);
 }
 
 .image {
@@ -100,6 +106,7 @@
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.045em;
+  overflow-wrap: anywhere;
 }
 
 .info p,
@@ -133,4 +140,9 @@
     opacity: 1;
     transform: none;
   }
+}
+
+@media (max-width: 430px) {
+  .info { gap: 8px; }
+  .manifest { font-size: 10px; }
 }

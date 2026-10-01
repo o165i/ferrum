@@ -52,4 +52,15 @@
 .empty { color: var(--muted); }
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (max-width: 880px) { .header { align-items: flex-start; flex-direction: column; } .formGrid { grid-template-columns: 1fr 1fr; } .orderGrid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 580px) { .page { width: min(100% - 28px, 1280px); } .metrics { width: 100%; justify-content: space-between; gap: 12px; } .formGrid, .orderGrid { grid-template-columns: 1fr; } .formGrid .full, .formGrid .check { grid-column: auto; } }
+@media (max-width: 580px) {
+  .page { width: min(100% - 28px, 1280px); padding: 46px 0 76px; }
+  .metrics { width: 100%; justify-content: space-between; gap: 12px; }
+  .tabs { overflow-x: auto; padding-bottom: 1px; }
+  .tabs button { min-height: 44px; }
+  .sectionHeader, .orderCard > header, .editorHeading { align-items: flex-start; flex-direction: column; }
+  .sectionHeader > button, .save { min-height: 44px; }
+  .formGrid, .orderGrid { grid-template-columns: 1fr; }
+  .formGrid .full, .formGrid .check { grid-column: auto; }
+  .orderActions { align-items: stretch; flex-direction: column; }
+  .orderActions button { min-height: 44px; }
+}

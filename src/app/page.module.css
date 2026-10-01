@@ -28,3 +28,8 @@
   .sectionHeader { align-items: flex-start; flex-direction: column; }
   .productGrid { gap: 34px 12px; }
 }
+
+@media (max-width:360px) {
+  .heroTitle { font-size: 68px; }
+  .productGrid { grid-template-columns: 1fr; gap: 42px; }
+}

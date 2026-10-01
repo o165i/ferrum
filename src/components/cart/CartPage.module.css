@@ -143,7 +143,14 @@
 }
 
 @media (max-width: 760px) {
+  .page, .empty { width: min(100% - 28px, 1180px); padding: 52px 0 76px; }
   .layout { grid-template-columns: 1fr; gap: 32px; }
   .item { grid-template-columns: 82px minmax(0, 1fr); }
   .item > strong { grid-column: 2; }
+  .summary { padding: 20px; }
+}
+
+@media (max-width: 360px) {
+  .item { grid-template-columns: 72px minmax(0, 1fr); gap: 16px; }
+  .itemInfo label { align-items: flex-start; flex-direction: column; gap: 6px; }
 }

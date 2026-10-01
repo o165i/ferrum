@@ -15,8 +15,12 @@ const PRODUCTS: {
   priceCents: number;
   saleCents: number | null;
   popularityScore: number;
-  imgA: string;
-  imgB: string;
+  imgA?: string;
+  imgB?: string;
+  description?: string;
+  sizes?: string[];
+  images?: string[];
+  stock?: number;
 }[] = [
   { ref: "FR-014", name: "HAZARD ANORAK", slug: "hazard-anorak", category: "ZIP_HOODIES", color: "BLACK", priceCents: 34000, saleCents: null, popularityScore: 96, imgA: "ferrum-anorak-a", imgB: "ferrum-anorak-b" },
   { ref: "FR-021", name: "SLAG COAT", slug: "slag-coat", category: "HOODIES", color: "GREY", priceCents: 62000, saleCents: 48000, popularityScore: 88, imgA: "ferrum-coat-a", imgB: "ferrum-coat-b" },
@@ -31,6 +35,26 @@ const PRODUCTS: {
   { ref: "FR-071", name: "WELD ZIP HOODIE", slug: "weld-zip-hoodie", category: "ZIP_HOODIES", color: "RUST", priceCents: 24000, saleCents: null, popularityScore: 83, imgA: "ferrum-zip-a", imgB: "ferrum-zip-b" },
   { ref: "FR-074", name: "FOUNDRY SHORTS", slug: "foundry-shorts", category: "SHORTS", color: "BLACK", priceCents: 12000, saleCents: null, popularityScore: 75, imgA: "ferrum-shorts-a", imgB: "ferrum-shorts-b" },
   { ref: "FR-077", name: "FORGE SWEATPANTS", slug: "forge-sweatpants", category: "SWEATPANTS", color: "GREY", priceCents: 17000, saleCents: null, popularityScore: 87, imgA: "ferrum-sweatpants-a", imgB: "ferrum-sweatpants-b" },
+  {
+    ref: "FR-101",
+    name: "WHITE BOOTCUT JEANS",
+    slug: "white-bootcut-jeans",
+    category: "JEANS",
+    color: "DIRTY WHITE",
+    priceCents: 3000,
+    saleCents: null,
+    popularityScore: 100,
+    description: "Dirty-white low-rise bootcut jeans with a fitted silhouette through the upper leg and a flared leg opening. Finished with a washed effect, panelled detailing and raw-edge hems. Available in sizes S–XXXL.",
+    sizes: ["S", "M", "L", "XL", "XXL", "XXXL"],
+    images: [
+      "/products/white-bootcut-jeans/01-front.png",
+      "/products/white-bootcut-jeans/02-product.png",
+      "/products/white-bootcut-jeans/03-back.png",
+      "/products/white-bootcut-jeans/04-side.png",
+      "/products/white-bootcut-jeans/05-detail.png",
+    ],
+    stock: 20,
+  },
 ];
 
 async function main() {
@@ -71,9 +95,10 @@ async function main() {
         color: p.color,
         priceCents: p.priceCents,
         saleCents: p.saleCents,
-        sizes: ["XS", "S", "M", "L", "XL"],
-        images: [IMG(p.imgA), IMG(p.imgB)],
-        stock: 25,
+        description: p.description ?? "",
+        sizes: p.sizes ?? ["XS", "S", "M", "L", "XL"],
+        images: p.images ?? [IMG(p.imgA ?? "ferrum-placeholder-a"), IMG(p.imgB ?? "ferrum-placeholder-b")],
+        stock: p.stock ?? 25,
         popularityScore: p.popularityScore,
         isActive: true,
       },
